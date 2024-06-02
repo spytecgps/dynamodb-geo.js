@@ -1,4 +1,4 @@
-import { DynamoDB } from "aws-sdk";
+import * as DynamoDB from "@aws-sdk/client-dynamodb";
 
 export interface BatchWritePointOutput extends DynamoDB.BatchWriteItemOutput {
 }

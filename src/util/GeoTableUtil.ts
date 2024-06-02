@@ -14,7 +14,7 @@
  */
 
 
-import { DynamoDB } from "aws-sdk";
+import * as DynamoDB from '@aws-sdk/client-dynamodb'
 import { GeoDataManagerConfiguration } from "../GeoDataManagerConfiguration";
 /**
  * Utility class.
