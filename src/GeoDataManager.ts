@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { AWSError, DynamoDB, Request } from "aws-sdk";
+import * as DynamoDB from '@aws-sdk/client-dynamodb'
 import { DynamoDBManager } from "./dynamodb/DynamoDBManager";
 import { GeoDataManagerConfiguration } from "./GeoDataManagerConfiguration";
 import {
@@ -112,7 +112,7 @@ export class GeoDataManager {
    *
    * @return Result of put point request.
    */
-  public putPoint(putPointInput: PutPointInput): Request<PutPointOutput, AWSError> {
+  public putPoint(putPointInput: PutPointInput) {
     return this.dynamoDBManager.putPoint(putPointInput);
   }
 
@@ -141,7 +141,7 @@ export class GeoDataManager {
    *
    * @return Result of batch put point request.
    */
-  public batchWritePoints(putPointInputs: PutPointInput[]): Request<BatchWritePointOutput, AWSError> {
+  public batchWritePoints(putPointInputs: PutPointInput[]) {
     return this.dynamoDBManager.batchWritePoints(putPointInputs);
   }
 
@@ -166,7 +166,7 @@ export class GeoDataManager {
    *
    * @return Result of get point request.
    * */
-  public getPoint(getPointInput: GetPointInput): Request<GetPointOutput, AWSError> {
+  public getPoint(getPointInput: GetPointInput) {
     return this.dynamoDBManager.getPoint(getPointInput);
   }
 
@@ -195,7 +195,7 @@ export class GeoDataManager {
    *
    * @return Result of rectangle query request.
    */
-  public async queryRectangle(queryRectangleInput: QueryRectangleInput): Promise<DynamoDB.ItemList> {
+  public async queryRectangle(queryRectangleInput: QueryRectangleInput) {
     const latLngRect: S2LatLngRect = S2Util.latLngRectFromQueryRectangleInput(queryRectangleInput);
 
     const covering = new Covering(new this.config.S2RegionCoverer().getCoveringCells(latLngRect));
@@ -226,7 +226,7 @@ export class GeoDataManager {
    *
    * @return Result of radius query request.
    * */
-  public async queryRadius(queryRadiusInput: QueryRadiusInput): Promise<DynamoDB.ItemList> {
+  public async queryRadius(queryRadiusInput: QueryRadiusInput) {
     const latLngRect: S2LatLngRect = S2Util.getBoundingLatLngRectFromQueryRadiusInput(queryRadiusInput);
 
     const covering = new Covering(new this.config.S2RegionCoverer().getCoveringCells(latLngRect));
@@ -264,7 +264,7 @@ export class GeoDataManager {
    *
    * @return Result of update point request.
    */
-  public updatePoint(updatePointInput: UpdatePointInput): Request<UpdatePointOutput, AWSError> {
+  public updatePoint(updatePointInput: UpdatePointInput) {
     return this.dynamoDBManager.updatePoint(updatePointInput);
   }
 
@@ -289,7 +289,7 @@ export class GeoDataManager {
    *
    * @return Result of delete point request.
    */
-  public deletePoint(deletePointInput: DeletePointInput): Request<DeletePointOutput, AWSError> {
+  public deletePoint(deletePointInput: DeletePointInput) {
     return this.dynamoDBManager.deletePoint(deletePointInput);
   }
 
@@ -323,7 +323,7 @@ export class GeoDataManager {
    * @param geoQueryInput
    * @returns DynamoDB.ItemList
    */
-  private filterByRadius(list: DynamoDB.ItemList, geoQueryInput: QueryRadiusInput): DynamoDB.ItemList {
+  private filterByRadius(list, geoQueryInput: QueryRadiusInput) {
     let centerLatLng: S2LatLng = null;
     let radiusInMeter = 0;
 
@@ -350,7 +350,7 @@ export class GeoDataManager {
    * @param geoQueryInput
    * @returns DynamoDB.ItemList
    */
-  private filterByRectangle(list: DynamoDB.ItemList, geoQueryInput: QueryRectangleInput): DynamoDB.ItemList {
+  private filterByRectangle(list, geoQueryInput: QueryRectangleInput){
     const latLngRect: S2LatLngRect = S2Util.latLngRectFromQueryRectangleInput(geoQueryInput);
 
     return list.filter(item => {
